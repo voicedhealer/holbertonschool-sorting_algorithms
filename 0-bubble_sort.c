@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include "sort.h"
 
 /**
  * print_array - Affiche un tableau d'entiers
