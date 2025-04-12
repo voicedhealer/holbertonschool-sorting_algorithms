@@ -12,7 +12,7 @@ void quick_sort_partition(int *array, int low, int high, size_t size)
 	int pivot;
 	int i = low - 1, j, temp;
 
-	if (array == NULL || size < 1)
+	if (array == NULL || size < 2)
 		return;
 
 	/* Base case: stop if there's 1 or no element */
