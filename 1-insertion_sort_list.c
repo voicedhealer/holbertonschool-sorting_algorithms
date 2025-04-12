@@ -1,37 +1,52 @@
 #include "sort.h"
 
 /**
- * insertion_sort_list - Sorts a doubly linked list of integers in ascending order
- *                       using the insertion sort algorithm
- * @list: The list containing the integers
- */
+* insertion_sort_list - Sorts a doubly linked list of integers
+*                       using the insertion sort algorithm.
+* @list: Double pointer to the head of the doubly linked list
+*
+* Description: Swaps nodes to sort the list in ascending order.
+* Prints the list after each swap.
+*/
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *node = (*list)->next, *next_node;
-	listint_t *current, *prev, *tmp;
+	listint_t *current, *next_node;
 
-	while (node != NULL)
+	if (list == NULL || *list == NULL || (*list)->next == NULL)
+		return;
+
+	current = (*list)->next;
+
+	while (current != NULL)
 	{
-		current = node;
-		prev = current->prev;
-		next_node = node->next;
+		next_node = current->next;
 
-		while (prev != NULL && current->n < prev->n)
+		while (current->prev != NULL && current->n < current->prev->n)
 		{
-			tmp = prev->prev;
-			if (tmp != NULL)
-				tmp->next = current;
-			current->prev = tmp;
-			prev->next = current->next;
+			listint_t *prev_node = current->prev;
+
+			/* Adjust previous node's next pointer */
+			prev_node->next = current->next;
 			if (current->next != NULL)
-				current->next->prev = prev;
-			current->next = prev;
-			prev->prev = current;
-			if (tmp == NULL)
-				*list = current;
-			prev = current->prev;
+				current->next->prev = prev_node;
+
+			/* Update current's prev to the node before prev_node */
+			current->prev = prev_node->prev;
+
+			/* Adjust the node before prev_node (if it exists) */
+			if (prev_node->prev != NULL)
+				prev_node->prev->next = current;
+			else
+				*list = current; /* New head if prev_node was head */
+
+			/* Link current and prev_node */
+			current->next = prev_node;
+			prev_node->prev = current;
+
+			/* Print the updated list */
 			print_list(*list);
 		}
-		node = next_node;
+
+		current = next_node;
 	}
 }
